@@ -73,15 +73,59 @@ public class PlayerMove : MonoBehaviour
 
     public void Animator()
     {
-        if (rb.velocity.x != 0 && rb.velocity.y == 0)
+
+        if(!groundPound && airStunTimeUpGroundPound)
         {
-            anim.SetBool("IsRunning", true);
-            
-        }
-        else
+            if (rb.velocity.x != 0 && rb.velocity.y == 0 && !groundPound)
+            {
+                anim.SetBool("Is-Running", true);
+                anim.SetBool("Is-Fly-Running", false);
+                anim.SetBool("Is-Idle", false);
+
+            }
+            else if (rb.velocity.x != 0 && rb.velocity.y != 0 && !groundPound)
+            {
+                anim.SetBool("Is-Fly-Running", true);
+                anim.SetBool("Is-Running", false);
+                anim.SetBool("Is-Idle", false);
+                anim.SetBool("Ground-Pound-Fall", false);
+                anim.SetBool("Ground-Pound-Smash", false);
+            }
+            else if (PlayerGroundCollider.stateOftrigger)
+            {
+                anim.SetBool("Is-Running", false);
+                anim.SetBool("Is-Fly-Running", false);
+                anim.SetBool("Is-Idle", true);
+                anim.SetBool("Ground-Pound-Fall", false);
+                anim.SetBool("Ground-Pound-Smash", false);
+
+            }
+            else if (!PlayerGroundCollider.stateOftrigger)
+            {
+                anim.SetBool("Is-Running", false);
+                anim.SetBool("Is-Fly-Running", true);
+                anim.SetBool("Is-Idle", false);
+                anim.SetBool("Ground-Pound-Fall", false);
+                anim.SetBool("Ground-Pound-Smash", false);
+            }
+        }else if(groundPound && !airStunTimeUpGroundPound)
         {
-            anim.SetBool("IsRunning", false);
+            anim.SetBool("Is-Running", false);
+            anim.SetBool("Is-Fly-Running", false);
+            anim.SetBool("Is-Idle", false);
+            anim.SetBool("Ground-Pound-Fall", true);
+            anim.SetBool("Ground-Pound-Smash", false);
+        }else if(groundPound && airStunTimeUpGroundPound && PlayerGroundCollider.stateOftrigger)
+        {
+            anim.SetBool("Is-Running", false);
+            anim.SetBool("Is-Fly-Running", false);
+            anim.SetBool("Is-Idle", false);
+            anim.SetBool("Ground-Pound-Fall", true);
+            anim.SetBool("Ground-Pound-Smash", true);
         }
+        
+
+
 
         if(rb.velocity.x > 0)
         {
